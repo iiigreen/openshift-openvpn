@@ -10,16 +10,15 @@ ENV OPENVPN_DIR=/opt/openvpn
 
 RUN mkdir -p /dev/net \
     && if [ ! -c /dev/net/tun ]; then mknod /dev/net/tun c 10 200; fi \
-    && mkdir -p /opt/openvpn && \
-    cp -r /usr/share/easy-rsa/2.0/ ${OPENVPN_DIR}/easy-rsa
+    && mkdir -p ${OPENVPN_DIR} && \
+    cp -r /usr/share/easy-rsa/3.0/ ${OPENVPN_DIR}/easy-rsa
 
 # Generate CA and server certificates
 RUN cd ${OPENVPN_DIR}/easy-rsa \
-    && . ./vars \
-    && ./clean-all \
-    && ./pkitool --batch --initca \
-    && ./pkitool --batch --server server \
-    && ./build-dh
+    && ./easyrsa init-pki \
+    && echo | ./easyrsa build-ca nopass \
+    && ./easyrsa build-server-full server nopass \
+    && ./easyrsa gen-dh
 
 COPY openvpn.sh ${OPENVPN_DIR}/openvpn.sh
 
