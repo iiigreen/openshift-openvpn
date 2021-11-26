@@ -14,7 +14,7 @@ fi
 
 set -e
 
-KEY_DIR=${OPENVPN_DIR}/easy-rsa/keys
+KEY_DIR=${OPENVPN_DIR}/easy-rsa/pki
 CA_CRT=${KEY_DIR}/ca.crt
 
 echo -e "\n\nSave this CA certificate to a file for use in your VPN client\n"
@@ -40,14 +40,15 @@ openvpn --dev tun0 \
         --client-disconnect ${OPENVPN_DIR}/client_command.sh \
         --up ${OPENVPN_DIR}/updown.sh \
         --down ${OPENVPN_DIR}/updown.sh \
-        --dh ${KEY_DIR}/dh2048.pem \
+        --dh ${KEY_DIR}/dh.pem \
         --ca $CA_CRT \
-        --cert ${KEY_DIR}/server.crt \
-        --key ${KEY_DIR}/server.key \
+        --cert ${KEY_DIR}/issued/server.crt \
+        --key ${KEY_DIR}/private/server.key \
         --client-cert-not-required \
         --auth-user-pass-verify ${OPENVPN_DIR}/verify_user_pass.sh via-env \
         --server 10.2.3.0 255.255.255.0 \
         --proto tcp-server \
+        --lport 8080
         --topology subnet \
         --keepalive 10 60 \
         --push "route $KUBE_SERVICE_NETWORK 255.255.0.0" \
