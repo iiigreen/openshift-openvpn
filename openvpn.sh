@@ -32,6 +32,9 @@ SEARCH_DOMAINS=`grep search /etc/resolv.conf | xargs -n 1 | grep -v "^search$" |
 DNS_SERVER=`grep nameserver /etc/resolv.conf | head -n 1 | xargs -n 1 | grep -v "^nameserver$"`
 DNS_SERVER_NETWORK=`echo $DNS_SERVER | awk -F . '{print $1"."$2"."$3".0"}'`
 
+mkdir -p /dev/net
+if [ ! -c /dev/net/tun ]; then mknod /dev/net/tun c 10 200; fi
+
 openvpn --dev tun0 \
         --persist-tun \
         --script-security 3 \
