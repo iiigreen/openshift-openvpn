@@ -4,7 +4,7 @@ MAINTAINER Ivan Zelenov <izelenov@bcc.ru>
 
 EXPOSE 8080/tcp
 
-RUN yum update -y && yum install -y epel-release && yum install -y openvpn easy-rsa
+RUN yum install -y epel-release && yum install -y openvpn easy-rsa
 
 ENV OPENVPN_DIR=/opt/openvpn
 
