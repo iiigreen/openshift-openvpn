@@ -24,4 +24,4 @@ COPY openvpn.sh ${OPENVPN_DIR}/openvpn.sh
 
 COPY verify_user_pass.sh client_command.sh updown.sh /${OPENVPN_DIR}/
 
-CMD ["/opt/openvpn/openvpn.sh"]
+CMD ["${OPENVPN_DIR}/openvpn.sh"]
