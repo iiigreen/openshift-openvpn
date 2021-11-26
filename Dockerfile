@@ -1,4 +1,4 @@
-FROM openshift/base-centos7
+FROM docker.io/openshift/base-centos7
 
 MAINTAINER Ivan Zelenov <izelenov@bcc.ru>
 
