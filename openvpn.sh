@@ -17,8 +17,6 @@ set -e
 KEY_DIR=${OPENVPN_DIR}/easy-rsa/pki
 CA_CRT=${KEY_DIR}/ca.crt
 
-echo -e "\n\nSave this CA certificate to a file for use in your VPN client\n"
-cat $CA_CRT
 
 if [ "x$OPENVPN_USER" == "x" -o "x$OPENVPN_PASS" == "x" ]; then
     echo "Error: OPENVPN_USER and OPENVPN_PASS environment variables must be set"
@@ -27,8 +25,24 @@ fi
 
 echo -e "$OPENVPN_USER\n$OPENVPN_PASS" > openvpn_creds
 
+echo -e "\n\nUse this as OVPN confing file, for example opensift.ovn"
+echo "#----------------------------------------------------------"
+echo "client"
+echo "dev tun"
+echo "proto tcp"
+echo "remote yourhost.tld/IP 31194"
+echo "nobind"
+echo "persist-key"
+echo "persist-tun"
+echo "auth-user-pass"
+echo "<ca>"
+cat $CA_CRT
+echo "</ca>"
+echo "#----------------------------------------------------------"
+
 KUBE_SERVICE_NETWORK=`echo $KUBERNETES_SERVICE_HOST | awk -F . '{print $1"."$2".0.0"}'`
 DNS_SERVER=`grep nameserver /etc/resolv.conf | head -n 1 | xargs -n 1 | grep -v "^nameserver$"`
+SEARCH_DOMAIN=`grep search /etc/resolv.conf | xargs -n 1 | grep -v "^search$" | head -n 1`
 
 mkdir -p /dev/net
 if [ ! -c /dev/net/tun ]; then mknod /dev/net/tun c 10 200; fi
@@ -55,3 +69,4 @@ openvpn --dev tun0 \
         --keepalive 10 60 \
         --push "route $KUBE_SERVICE_NETWORK 255.255.0.0" \
         --push "dhcp-option DNS $DNS_SERVER" \
+        --push "dhcp-option DOMAIN $SEARCH_DOMAIN"
