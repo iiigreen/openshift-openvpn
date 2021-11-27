@@ -2,7 +2,7 @@ FROM ubi8
 
 MAINTAINER Ivan Zelenov <izelenov@bcc.ru>
 
-EXPOSE 8080/tcp
+EXPOSE 1194/tcp
 
 RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && yum install -y openvpn easy-rsa && yum install -y iptables
 

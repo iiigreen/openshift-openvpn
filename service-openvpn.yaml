@@ -11,7 +11,7 @@ spec:
     app: openvpn
   ports:
     - name: openvpn
-      port: 8080
-      targetPort: 8080
-      nodePort: 31194
+      port: 1194
+      targetPort: 1194
+      nodePort: 32194
   internalTrafficPolicy: Cluster

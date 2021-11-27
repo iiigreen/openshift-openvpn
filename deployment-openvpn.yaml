@@ -17,14 +17,15 @@ spec:
       containers:
         - name: openvpn-server
           image: quay.io/izelenov/openvpn-server:ubi
+          imagePullPolicy: Always
           pullSecrets: quay-izelenov
           ports:
-            - containerPort: 8080
+            - containerPort: 1194
           env: 
             - name: OPENVPN_USER
               value: vpnuser
             - name: OPENVPN_PASS
-              value: tidalscale44
+              value: vpnuserPASS42
           securityContext:
             allowPrivilegeEscalation: true
             privileged: true

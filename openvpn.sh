@@ -28,12 +28,12 @@ fi
 echo -e "$OPENVPN_USER\n$OPENVPN_PASS" > openvpn_creds
 
 KUBE_SERVICE_NETWORK=`echo $KUBERNETES_SERVICE_HOST | awk -F . '{print $1"."$2".0.0"}'`
-SEARCH_DOMAINS=`grep search /etc/resolv.conf | xargs -n 1 | grep -v "^search$" | xargs -n 1 -I '{}' echo '--push dhcp-option DOMAIN {}'`
 DNS_SERVER=`grep nameserver /etc/resolv.conf | head -n 1 | xargs -n 1 | grep -v "^nameserver$"`
-DNS_SERVER_NETWORK=`echo $DNS_SERVER | awk -F . '{print $1"."$2"."$3".0"}'`
 
 mkdir -p /dev/net
 if [ ! -c /dev/net/tun ]; then mknod /dev/net/tun c 10 200; fi
+
+iptables -F
 
 openvpn --dev tun0 \
         --persist-tun \
@@ -47,14 +47,11 @@ openvpn --dev tun0 \
         --ca $CA_CRT \
         --cert ${KEY_DIR}/issued/server.crt \
         --key ${KEY_DIR}/private/server.key \
-        --client-cert-not-required \
+        --verify-client-cert optional \
         --auth-user-pass-verify ${OPENVPN_DIR}/verify_user_pass.sh via-env \
         --server 10.2.3.0 255.255.255.0 \
         --proto tcp-server \
-        --lport 8080
         --topology subnet \
         --keepalive 10 60 \
         --push "route $KUBE_SERVICE_NETWORK 255.255.0.0" \
-        --push "route $DNS_SERVER_NETWORK 255.255.255.0" \
         --push "dhcp-option DNS $DNS_SERVER" \
-        $SEARCH_DOMAINS
