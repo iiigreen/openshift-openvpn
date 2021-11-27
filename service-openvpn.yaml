@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openvpn-service
+  labels:
+    app: openvpn
+spec:
+  type: NodePort
+  externalTrafficPolicy: Cluster
+  selector:
+    app: openvpn
+  ports:
+    - name: openvpn
+      port: 8080
+      targetPort: 8080
+      nodePort: 31194
+  internalTrafficPolicy: Cluster
