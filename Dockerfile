@@ -1,10 +1,10 @@
-FROM docker.io/openshift/base-centos7
+FROM ubi8
 
 MAINTAINER Ivan Zelenov <izelenov@bcc.ru>
 
 EXPOSE 8080/tcp
 
-RUN yum install -y epel-release && yum install -y openvpn easy-rsa
+RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && yum install -y openvpn easy-rsa && yum install -y iptables
 
 ENV OPENVPN_DIR=/opt/openvpn
 

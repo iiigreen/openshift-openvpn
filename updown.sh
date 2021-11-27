@@ -18,13 +18,13 @@ set -e
 # echo "script_type: $script_type"
 # echo "tun_mtu: $tun_mtu"
 
-IPTABLES=/sbin/iptables
+IPTABLES=/usr/sbin/iptables
 $IPTABLES -t nat -F POSTROUTING
 
 if [[ "$script_type" == "up" ]]; then
     # NAT traffic coming from VPN clients
-    $IPTABLES -t nat -A POSTROUTING -s ${ifconfig_local}/${ifconfig_netmask} -o eth0 -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -s ${ifconfig_local}/${route_netmask_1} -o eth0 -j MASQUERADE
 
     # NAT traffic going to the VPN clients
-    $IPTABLES -t nat -A POSTROUTING -d ${ifconfig_local}/${ifconfig_netmask} -o ${dev} -j MASQUERADE
+    $IPTABLES -t nat -A POSTROUTING -d ${ifconfig_local}/${route_netmask_1} -o ${dev} -j MASQUERADE
 fi
