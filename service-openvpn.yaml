@@ -8,7 +8,6 @@ spec:
   type: NodePort
   selector:
     app: openvpn
-
   ports:
     - name: openvpn
       port: 1194
