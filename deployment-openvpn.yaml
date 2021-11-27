@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openvpn-server
+  labels:
+    app: openvpn-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openvpn-server
+  template:
+    metadata:
+      labels:
+        app: openvpn-server
+    spec:
+      containers:
+        - name: openvpn-server
+          image: quay.io/izelenov/openvpn-server:ubi
+          pullSecrets: quay-izelenov
+          ports:
+            - containerPort: 8080
+          env: 
+            - name: OPENVPN_USER
+              value: vpnuser
+            - name: OPENVPN_PASS
+              value: tidalscale44
+          securityContext:
+            allowPrivilegeEscalation: true
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN", "MKNOD", "NET_RAW"]
