@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: openvpn-service
+  name: openvpn
   labels:
     app: openvpn
 spec:
   type: NodePort
-  externalTrafficPolicy: Cluster
   selector:
     app: openvpn
+
   ports:
     - name: openvpn
       port: 1194
       targetPort: 1194
-      nodePort: 32194
-  internalTrafficPolicy: Cluster
+      nodePort: 31194
+

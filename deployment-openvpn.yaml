@@ -3,22 +3,22 @@ kind: Deployment
 metadata:
   name: openvpn-server
   labels:
-    app: openvpn-server
+    app: openvpn
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: openvpn-server
+      app: openvpn
   template:
     metadata:
       labels:
-        app: openvpn-server
+        app: openvpn
     spec:
       containers:
         - name: openvpn-server
           image: quay.io/izelenov/openvpn-server:ubi
           imagePullPolicy: Always
-          pullSecrets: quay-izelenov
+###       pullSecrets: quay-izelenov
           ports:
             - containerPort: 1194
           env: 
