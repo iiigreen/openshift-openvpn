@@ -18,7 +18,6 @@ spec:
         - name: openvpn-server
           image: quay.io/izelenov/openvpn-server:ubi
           imagePullPolicy: Always
-###       pullSecrets: quay-izelenov
           ports:
             - containerPort: 1194
           env: 
