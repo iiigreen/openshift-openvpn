@@ -31,11 +31,7 @@ echo "client"
 echo "dev tun"
 echo "proto tcp"
 echo "remote yourhost.tld/IP 31194"
-echo "nobind"
-echo "persist-key"
-echo "persist-tun"
 echo "auth-user-pass"
-echo "tun-mtu 1100"
 echo "<ca>"
 cat $CA_CRT
 echo "</ca>"
@@ -68,7 +64,7 @@ openvpn --dev tun0 \
         --proto tcp-server \
         --topology subnet \
         --keepalive 10 60 \
+	--tun-mtu 1100 \
         --push "route $KUBE_SERVICE_NETWORK 255.255.0.0" \
         --push "dhcp-option DNS $DNS_SERVER" \
         --push "dhcp-option DOMAIN $SEARCH_DOMAIN"
-
