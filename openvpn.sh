@@ -43,7 +43,7 @@ SEARCH_DOMAIN=`grep search /etc/resolv.conf | xargs -n 1 | grep -v "^search$" | 
 
 mkdir -p /dev/net
 if [ ! -c /dev/net/tun ]; then mknod /dev/net/tun c 10 200; fi
-ip link set mtu 1000 dev eth0
+#ip link set mtu 1420 dev eth0
 
 iptables -F
 
@@ -65,6 +65,8 @@ openvpn --dev tun0 \
         --proto tcp-server \
         --topology subnet \
         --keepalive 10 60 \
+	--tun-mtu 1420 \
+	--mssfix 1000 \
         --push "route $KUBE_SERVICE_NETWORK 255.255.0.0" \
         --push "dhcp-option DNS $DNS_SERVER" \
         --push "dhcp-option DOMAIN $SEARCH_DOMAIN"
