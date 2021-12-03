@@ -32,10 +32,9 @@ echo "dev tun"
 echo "proto tcp"
 echo "remote yourhost.tld/IP 31194"
 echo "auth-user-pass"
-echo "tun-mtu 1420"
+echo "link-mtu 1200"
 echo "fragment 0"
 echo "mssfix 0"
-echo "comp-lzo"
 echo "<ca>"
 cat $CA_CRT
 echo "</ca>"
@@ -69,8 +68,7 @@ openvpn --dev tun0 \
         --proto tcp-server \
         --topology subnet \
         --keepalive 10 60 \
-	--tun-mtu 1420 \
-	--mssfix 1000 \
+	--link-mtu 1200 \
         --push "route $KUBE_SERVICE_NETWORK 255.255.0.0" \
         --push "dhcp-option DNS $DNS_SERVER" \
         --push "dhcp-option DOMAIN $SEARCH_DOMAIN"
