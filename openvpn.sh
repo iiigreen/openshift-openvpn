@@ -35,6 +35,7 @@ echo "nobind"
 echo "persist-key"
 echo "persist-tun"
 echo "auth-user-pass"
+echo "tun-mtu 1100"
 echo "<ca>"
 cat $CA_CRT
 echo "</ca>"
@@ -65,6 +66,7 @@ openvpn --dev tun0 \
         --auth-user-pass-verify ${OPENVPN_DIR}/verify_user_pass.sh via-env \
         --server 10.2.3.0 255.255.255.0 \
         --proto tcp-server \
+	--tun-mtu 1100 \
         --topology subnet \
         --keepalive 10 60 \
         --push "route $KUBE_SERVICE_NETWORK 255.255.0.0" \
