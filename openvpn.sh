@@ -67,6 +67,7 @@ openvpn --dev tun0 \
         --server 10.2.3.0 255.255.255.0 \
         --proto tcp-server \
         --tun-mtu 1100 \
+	--mssfix 1050 \
         --topology subnet \
         --keepalive 10 60 \
         --push "route $KUBE_SERVICE_NETWORK 255.255.0.0" \
